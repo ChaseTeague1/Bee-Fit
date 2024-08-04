@@ -13,6 +13,8 @@ class User(db.Model, SerializerMixin):
     _password_hash = db.Column(db.String)
     created_at = db.Column(db.DateTime)
 
+    reviews = db.relationship('Review', cascade='all,delete', backref='user')
+
 
 class Post(db.Model, SerializerMixin):
     __tablename__ = 'posts'
@@ -23,6 +25,8 @@ class Post(db.Model, SerializerMixin):
     price = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime)
 
+    reviews = db.relationship('Review', cascade='all,delete', backref='post')
+
 
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
@@ -30,6 +34,7 @@ class Review(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key = True)
     body = db.Column(db.String, nullable=False)
     rating = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime)
+
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-    created_at = db.Column(db.DateTime)
