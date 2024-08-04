@@ -15,6 +15,8 @@ class User(db.Model, SerializerMixin):
 
     reviews = db.relationship('Review', cascade='all,delete', backref='user')
 
+    serialize_rules = ('-reviews.user',)
+
 
 class Post(db.Model, SerializerMixin):
     __tablename__ = 'posts'
@@ -27,6 +29,8 @@ class Post(db.Model, SerializerMixin):
 
     reviews = db.relationship('Review', cascade='all,delete', backref='post')
 
+    serialize_rules = ('-reviews.post',)
+
 
 class Review(db.Model, SerializerMixin):
     __tablename__ = 'reviews'
@@ -38,3 +42,5 @@ class Review(db.Model, SerializerMixin):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    serialize_rules = ('-user.reviews', '-post.reviews',)
