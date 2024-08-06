@@ -7,40 +7,34 @@ from config import db, bcrypt
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    profile_pic = db.Column(db.String)
-    _password_hash = db.Column(db.String)
-    created_at = db.Column(db.DateTime)
+    email = db.Column(db.String, unique=True, nullable=False)
 
-    reviews = db.relationship('Review', cascade='all,delete', backref='user')
+    orders = db.relationship('Order', backref='customer')
 
-    serialize_rules = ('-reviews.user',)
+class Order(db.Model, SerializerMixin):
+    __tablename__ = 'orders'
 
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.Date)
 
-class Post(db.Model, SerializerMixin):
-    __tablename__ = 'posts'
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=False)
+    order_items = db.relationship('OrderItem', backref='order')
 
-    id = db.Column(db.Integer, primary_key = True)
-    title = db.Column(db.String, nullable=False)
-    body = db.Column(db.String)
+class Item(db.Model, SerializerMixin):
+    __tablename__ = 'items'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
     price = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime)
 
-    reviews = db.relationship('Review', cascade='all,delete', backref='post')
+    order_items = db.relationship('OrderItem', backref='item')
 
-    serialize_rules = ('-reviews.post',)
+class OrderItem(db.Model, SerializerMixin):
+    __tablename__ = 'order_items'
 
-
-class Review(db.Model, SerializerMixin):
-    __tablename__ = 'reviews'
-
-    id = db.Column(db.Integer, primary_key = True)
-    body = db.Column(db.String, nullable=False)
-    rating = db.Column(db.Integer)
-    created_at = db.Column(db.DateTime)
-
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-
-    serialize_rules = ('-user.reviews', '-post.reviews',)
+    quantity = db.Column(db.Integer, nullable=False)
+    
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), primary_key=True)
