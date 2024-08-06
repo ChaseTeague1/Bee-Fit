@@ -2,78 +2,63 @@
 
 # Standard library imports
 from random import randint, choice as rc
-
+import random
 # Remote library imports
 from faker import Faker
 
 # Local imports
 from app import app
-from models import db, Post, Review, User
+from models import db, Order, Item, User, OrderItem
 
 fake = Faker()
 
 
-def create_posts():
-    posts = []
-    for _ in range(10):
-        p = Post(
-            title=fake.name(),
-            body=fake.sentence(),
-            price = fake.random_digit()
-        )
-        posts.append(p)
-
-    return posts
-
-
-def create_users():
-    users = []
-    for _ in range(5):
-        u = User(
+def seed_users(n):
+    for _ in range(n):
+        user = User(
             name=fake.name(),
-            profile_pic=fake.sentence()
+            email=fake.email(),
         )
-        users.append(u)
+        user.password_hash = user.name + 'password'
+        db.session.add(user)
+    db.session.commit()
 
-    return users
-
-
-def create_reviews(posts, users):
-    reviews = []
-    for _ in range(20):
-        r = Review(
-            body=fake.sentence(),
-            rating=fake.random_digit(),
-            user_id=rc([user.id for user in users]),
-            post_id=rc([post.id for post in posts])
+def seed_items(n):
+    for _ in range(n):
+        item = Item(
+            name=fake.word(),
+            price=round(random.uniform(10.0, 100.0), 2)
         )
-        reviews.append(r)
+        db.session.add(item)
+    db.session.commit()
 
-    return reviews
+def seed_orders(n):
+    user_ids = [user.id for user in User.query.all()]
+    item_ids = [item.id for item in Item.query.all()]
 
-
-if __name__ == '__main__':
-
-    with app.app_context():
-        print("Clearing db...")
-        Post.query.delete()
-        Review.query.delete()
-        User.query.delete()
-
-        print("Seeding posts...")
-        posts = create_posts()
-        db.session.add_all(posts)
+    for _ in range(n):
+        order = Order(
+            created_at=fake.date_this_year(),
+        )
+        db.session.add(order)
         db.session.commit()
 
-        print("Seeding campers...")
-        users = create_users()
-        db.session.add_all(users)
-        db.session.commit()
+        # Add order items
+        num_items = random.randint(1, 5)
+        for _ in range(num_items):
+            order_item = OrderItem(
+                order_id=order.id,
+                item_id=random.choice(item_ids),
+                quantity=random.randint(1, 10)
+            )
+            db.session.add(order_item)
+    db.session.commit()
 
-        print("Seeding signups...")
-        reviews = create_reviews(posts, users)
-        db.session.add_all(reviews)
-        db.session.commit()
-
-        print("Done seeding!")
+with app.app_context():
+    db.drop_all()
+    db.create_all()
+    
+    seed_users(10)  # Create 10 users
+    seed_items(10)  # Create 10 items
+    seed_orders(10)  # Create 10 orders with random order items
 
