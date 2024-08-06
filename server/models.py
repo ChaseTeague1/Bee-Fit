@@ -13,6 +13,8 @@ class User(db.Model, SerializerMixin):
 
     orders = db.relationship('Order', backref='customer')
 
+    serialize_rules = ('-orders.customer',)
+
 class Order(db.Model, SerializerMixin):
     __tablename__ = 'orders'
 
@@ -20,7 +22,10 @@ class Order(db.Model, SerializerMixin):
     created_at = db.Column(db.Date)
 
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=False)
+
     order_items = db.relationship('OrderItem', backref='order')
+
+    serialize_rules = ('-order_items.order',)
 
 class Item(db.Model, SerializerMixin):
     __tablename__ = 'items'
@@ -31,10 +36,14 @@ class Item(db.Model, SerializerMixin):
 
     order_items = db.relationship('OrderItem', backref='item')
 
+    serialize_rules = ('-order_items.product',)
+
 class OrderItem(db.Model, SerializerMixin):
     __tablename__ = 'order_items'
 
     quantity = db.Column(db.Integer, nullable=False)
-    
+
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), primary_key=True)
+
+    serialize_rules = ('-order.order_items', '-product.order_items')
