@@ -1,64 +1,50 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.ext.hybrid import hybrid_property
 
-from config import db, bcrypt
+from config import db
 
 # Models go here!
+
+workout_exercise = db.Table('workout_exercise',
+    db.Column('workout_id', db.Integer, db.ForeignKey('workouts.id'), primary_key=True),
+    db.Column('exercise_id', db.Integer, db.ForeignKey('exercises.id'), primary_key=True),
+    db.Column('reps', db.Integer)
+)
+
+
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    email = db.Column(db.String, unique=True, nullable=False)
-    _password_hash = db.Column(db.String)
+    email = db.Column(db.String, nullable=False)
 
-    orders = db.relationship('Order', backref='user')
+    workouts = db.relationship('Workout', backref='user')
 
-    serialize_rules = ('-orders.user',)
+    serialize_rules = ('-workouts',)
 
-    @hybrid_property
-    def password_hash(self):
-        raise AttributeError('Password hashes may not be viewed.')
+class Workout(db.Model, SerializerMixin):
+    __tablename__ = 'workouts'
 
-    @password_hash.setter
-    def password_hash(self, password):
-        password_hash = bcrypt.generate_password_hash(
-            password.encode('utf-8'))
-        self._password_hash = password_hash.decode('utf-8')
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String, nullable = False)
+    duration = db.Column(db.String, nullable = False)
+    description = db.Column(db.String, nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def authenticate(self, password):
-        return bcrypt.check_password_hash(
-            self._password_hash, password.encode('utf-8'))
+    exercises = db.relationship('Exercise', secondary=workout_exercise, backref='workout')
+    exercise_names = association_proxy('exercises', 'name')
 
-class Order(db.Model, SerializerMixin):
-    __tablename__ = 'orders'
+    serialize_rules = ('-user.workouts', '-exercises.workouts')
 
-    id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.Date)
-    customer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+class Exercise(db.Model, SerializerMixin):
+    __tablename__ = 'exercises'
 
-    order_items = db.relationship('OrderItem', backref='order')
-
-    serialize_rules = ('-order_items.order',)
-
-class Item(db.Model, SerializerMixin):
-    __tablename__ = 'items'
-
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String, nullable=False)
-    price = db.Column(db.Integer, nullable=False)
+    category = db.Column(db.String, nullable=False)
+    picture = db.Column(db.String)
+    description = db.Column(db.String, nullable=False)
 
-    order_items = db.relationship('OrderItem', backref='item')
+    serialize_rules = ('-workouts.exercises',)
 
-    serialize_rules = ('-order_items.item',)
-
-class OrderItem(db.Model, SerializerMixin):
-    __tablename__ = 'order_items'
-
-    quantity = db.Column(db.Integer, nullable=False)
-
-    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
-    item_id = db.Column(db.Integer, db.ForeignKey('items.id'), primary_key=True)
-
-    serialize_rules = ('-order.order_items', '-item.order_items')

@@ -1,64 +1,70 @@
-#!/usr/bin/env python3
-
-# Standard library imports
-from random import randint, choice as rc
-import random
-# Remote library imports
 from faker import Faker
-
-# Local imports
+from sqlalchemy import text
+from config import db
+from models import User, Workout, Exercise
 from app import app
-from models import db, Order, Item, User, OrderItem
 
 fake = Faker()
 
-
-def seed_users(n):
-    for _ in range(n):
+def seed_users(num_users=10):
+    """Seed users with fake data."""
+    for _ in range(num_users):
         user = User(
             name=fake.name(),
-            email=fake.email(),
+            email=fake.email()
         )
-        user.password_hash = user.name + 'password'
         db.session.add(user)
     db.session.commit()
 
-def seed_items(n):
-    for _ in range(n):
-        item = Item(
+def seed_exercises(num_exercises=15):
+    """Seed exercises with fake data."""
+    for _ in range(num_exercises):
+        exercise = Exercise(
             name=fake.word(),
-            price=round(random.uniform(10.0, 100.0), 2)
+            category=fake.word(),
+            picture=fake.image_url(),
+            description=fake.text()
         )
-        db.session.add(item)
+        db.session.add(exercise)
     db.session.commit()
 
-def seed_orders(n):
-    user_ids = [user.id for user in User.query.all()]
-    item_ids = [item.id for item in Item.query.all()]
-
-    for _ in range(n):
-        order = Order(
-            created_at=fake.date_this_year(),
+def seed_workouts(num_workouts=20):
+    """Seed workouts with fake data."""
+    users = User.query.all()
+    exercises = Exercise.query.all()
+    
+    for _ in range(num_workouts):
+        workout = Workout(
+            title=fake.sentence(),
+            duration=fake.time(),
+            description=fake.text(),
+            user_id=fake.random_element(elements=[user.id for user in users])
         )
-        db.session.add(order)
-        db.session.commit()
+        db.session.add(workout)
+        db.session.flush()  # Ensure workout.id is available
 
-        # Add order items
-        num_items = random.randint(1, 5)
-        for _ in range(num_items):
-            order_item = OrderItem(
-                order_id=order.id,
-                item_id=random.choice(item_ids),
-                quantity=random.randint(1, 10)
-            )
-            db.session.add(order_item)
+        # Track added exercise combinations to avoid duplicates
+        added_combinations = set()
+
+        # Add some exercises to the workout
+        for _ in range(fake.random_int(min=1, max=5)):
+            exercise = fake.random_element(elements=exercises)
+            combination = (workout.id, exercise.id)
+            
+            if combination not in added_combinations:
+                added_combinations.add(combination)
+                db.session.execute(
+                    text('INSERT INTO workout_exercise (workout_id, exercise_id, reps) VALUES (:workout_id, :exercise_id, :reps)'),
+                    {'workout_id': workout.id, 'exercise_id': exercise.id, 'reps': fake.random_int(min=5, max=15)}
+                )
+    
     db.session.commit()
+
 
 with app.app_context():
-    db.drop_all()
-    db.create_all()
-    
-    seed_users(10)  # Create 10 users
-    seed_items(10)  # Create 10 items
-    seed_orders(10)  # Create 10 orders with random order items
+    db.create_all()  # Ensure all tables are created
+    seed_users()
+    seed_exercises()
+    seed_workouts()
+    print("Database seeded!")
 
