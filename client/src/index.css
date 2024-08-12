@@ -5,3 +5,139 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
+
+
+.app-container {
+  background-color: #FCD12A;
+  height: fit-content;
+  width: 100%;
+}
+
+/* WORKOUT PAGE STYLING */
+
+.workout-card {
+  justify-content: space-between;
+  position: relative;
+  margin: 20px;
+  padding: 20px;
+  width: 500px;
+  min-height: 200px;
+  display: grid;
+  grid-template-rows: 20px 50px 1fr 50px;
+  border-radius: 10px;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  background: radial-gradient(#FCD12A, #FCF4A3);
+
+}
+
+.workout-card:hover{
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+  transform: scale(1.01);
+}
+
+.workout-card.flip{
+  transform: rotateY(180deg);
+}
+
+.workout-card .front, .workout-card .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.workout-card .back {
+  transform: rotateY(180deg); 
+  justify-content: center;
+  display: flex;
+}
+
+.workout-card-container {
+  perspective: 1000px;
+}
+
+.workout-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+
+.app-container{
+  margin: 5px;
+}
+
+
+.nav-bar{
+  border: solid 4px;
+  border-radius: 10px;
+  background-color: #FCF4A3;
+  margin: 5px;
+  display: flex;
+}
+
+.home-container{
+  border: solid 4px;
+  margin: 4px;
+  border-radius: 10px;
+}
+
+.nav-links{
+  display: flex;
+  opacity: 100%;
+  margin: 10px;
+  color: black;
+  background-color: #FFE0B2;
+  height: 20px;
+  width: 200px;
+  padding: 10px;
+  border: solid 1px grey;
+  border-radius: 10px;
+  text-decoration: none;
+  text-align: center;
+  justify-content: center;
+}
+
+.nav-links:hover{
+  background-color: #FCD12A;
+}
+
+.workout-title{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-style: italic;
+  text-align: center;
+}
+
+.w-title{
+  margin-top: 5px;
+  text-align: center;
+  padding: 5px;
+}
+
+.w-description{
+  padding-top: 40px;
+  font-weight: lighter;
+  text-align: center;
+  margin: 0px;
+}
+
+.w-duration{
+  text-align: center;
+  margin: 0px;
+}
+
+.e-list{
+  display: flex;
+  border: solid;
+  justify-content: center;
+  width: 200px;
+  border-radius: 10px;
+  margin: 4px;
+  background: radial-gradient(#FCF4A3, #FCD12A);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+}
+
+
+/* EXERCISE PAGE STYLING */
