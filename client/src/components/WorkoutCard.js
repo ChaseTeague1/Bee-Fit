@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import {Link} from 'react-router-dom';
+
 
 function WorkoutCard({ workout }) {
     const [isFlipped, setIsFlipped] = useState(false);
@@ -23,7 +25,9 @@ function WorkoutCard({ workout }) {
                         {workout.exercises.map(exercise => (
                             <ul>
                                 <li className="e-list" key={exercise.id}>
+                                    <Link to={`/exercises/${exercise.id}`}>
                                     {exercise.name}
+                                    </Link>
                                 </li>
                             </ul>
                         ))}

@@ -52,7 +52,43 @@ class Exercises(Resource):
         exercises = [exercise.to_dict() for exercise in Exercise.query.all()]
         return make_response(exercises, 200)
     
+    def post(self):
+        data = request.get_json()
+
+        new_exercise = Exercise(
+            name = data['name'],
+            category = data['category'],
+            picture = data['picture'],
+            description = data['description'],
+        )
+
+        db.session.add(new_exercise)
+        db.session.commit()
+
+        return make_response(new_exercise.to_dict(), 201)
+    
 api.add_resource(Exercises, '/exercises')
+
+class ExerciseById(Resource):
+    def get(self, id):
+        exercise = Exercise.query.filter(Exercise.id == id).first()
+        return make_response(exercise.to_dict(), 200)
+    
+    def patch(self, id):
+        exercise = Exercise.query.filter(Exercise.id == id).first()
+        data = request.get_json()
+
+        for attr in data:
+            setattr(exercise, attr, data[attr])
+        
+        try:
+            db.session.add(exercise)
+            db.session.commit()
+            return make_response(exercise.to_dict(), 200)
+        except ValueError:
+            return {'error': 'Could not find exercise'}
+
+api.add_resource(ExerciseById, '/exercises/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

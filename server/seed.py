@@ -3,8 +3,14 @@ from sqlalchemy import text
 from config import db
 from models import User, Workout, Exercise
 from app import app
+import random
 
 fake = Faker()
+
+def clear_join_table():
+    """Clear data from the join table workout_exercise."""
+    db.session.execute(text('DELETE FROM workout_exercise'))
+    db.session.commit()
 
 def seed_users(num_users=10):
     """Seed users with fake data."""
@@ -18,10 +24,11 @@ def seed_users(num_users=10):
 
 def seed_exercises(num_exercises=15):
     """Seed exercises with fake data."""
+    categories = ['Cardio', 'Chest', 'Arms', 'Upper Back', 'Lower Back', 'Abs', 'Shoulders', 'Legs']
     for _ in range(num_exercises):
         exercise = Exercise(
             name=fake.word(),
-            category=fake.word(),
+            category=random.choice(categories),
             picture=fake.image_url(),
             description=fake.text()
         )
@@ -62,6 +69,12 @@ def seed_workouts(num_workouts=20):
 
 
 with app.app_context():
+    User.query.delete()
+    Workout.query.delete()
+    Exercise.query.delete()
+    clear_join_table()
+
+
     db.create_all()  # Ensure all tables are created
     seed_users()
     seed_exercises()

@@ -5,6 +5,7 @@ import Home from "./Home";
 import NewWorkout from "./NewWorkout";
 import WorkoutList from "./WorkoutList";
 import ExerciseList from "./ExerciseList";
+import ExerciseDetail from "./ExerciseDetail";
 
 function App() {
   const [users, setUsers] = useState([])
@@ -36,6 +37,10 @@ function App() {
     setWorkouts([...workouts, newWorkout])
   }
 
+  function onNewExerciseSubmit(newExercise){
+    setExercises([...exercises, newExercise])
+  }
+
   return (
     <div className="app-container">
       <NavBar />
@@ -46,9 +51,13 @@ function App() {
         <Route path="/workouts">
           <WorkoutList onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts}/>
         </Route>
-        <Route path="/exercises">
-          <ExerciseList exercises={exercises}/>
+        <Route exact path="/exercises">
+          <ExerciseList onNewExerciseSubmit={onNewExerciseSubmit} exercises={exercises}/>
         </Route>
+        <Route 
+        path="/exercises/:id" 
+        render ={(props) => <ExerciseDetail {...props} exercises={exercises}/>}
+        />
       </Switch>
     </div>
   )

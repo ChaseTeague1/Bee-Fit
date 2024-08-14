@@ -141,3 +141,7 @@
 
 
 /* EXERCISE PAGE STYLING */
+
+.e-card{
+  border: solid 2px;
+}
