@@ -17,11 +17,13 @@ function ExerciseList({ onNewExerciseSubmit, exercises }) {
         <div>
             <NewExercise onExerciseSubmit={onNewExerciseSubmit} />
             {Object.keys(groupedExercises).map(category => (
-                <div key={category}>
-                    <h2>{category}</h2>
+                <div className="e-container" key={category}>
+                    <h2 className="cat-title">{category}</h2>
+                    <div className="card-list">
                     {groupedExercises[category].map(exercise => (
                         <Exercise key={exercise.id} exercise={exercise} />
                     ))}
+                    </div>
                 </div>
             ))}
         </div>

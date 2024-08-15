@@ -8,7 +8,7 @@
 
 
 .app-container {
-  background-color: #FCD12A;
+  background-color: #909090;
   height: fit-content;
   width: 100%;
 }
@@ -143,5 +143,41 @@
 /* EXERCISE PAGE STYLING */
 
 .e-card{
+  justify-content: space-between;
+  margin: 20px;
+  padding: 20px;
+  width: 75px;
+  height: 25px;
+  display: flex;
+  grid-template-rows: 20px 50px 1fr 50px;
+  border-radius: 10px;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+  transform-style: preserve-3d;
+  background: radial-gradient(#FCD12A, #FCF4A3);
+  border: dashed;
+}
+
+.cat-title{
+  background-color: #FCF4A3;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.e-container{
   border: solid 2px;
+  margin: 4px;
+  text-align: center;
+}
+
+.e-card-container{
+  border: dotted;
+  display: flex;
+  flex: wrap;
+}
+
+.card-list{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
 }
