@@ -8,7 +8,7 @@
 
 
 .app-container {
-  background-color: #909090;
+  background-color: #312f17;
   height: fit-content;
   width: 100%;
 }
@@ -28,7 +28,7 @@
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
   transition: transform 0.6s;
   transform-style: preserve-3d;
-  background: radial-gradient(#FCD12A, #FCF4A3);
+  background: radial-gradient(#eec33d, #e5bd3f);
 
 }
 
@@ -73,7 +73,7 @@
 .nav-bar{
   border: solid 4px;
   border-radius: 10px;
-  background-color: #FCF4A3;
+  background-color: #e5bd3f;
   margin: 5px;
   display: flex;
 }
@@ -89,11 +89,11 @@
   opacity: 100%;
   margin: 10px;
   color: black;
-  background-color: #FFE0B2;
+  background-color: #eec33d;
   height: 20px;
   width: 200px;
   padding: 10px;
-  border: solid 1px grey;
+  border: solid 1px #312f17;
   border-radius: 10px;
   text-decoration: none;
   text-align: center;
@@ -101,7 +101,7 @@
 }
 
 .nav-links:hover{
-  background-color: #FCD12A;
+  background-color: #ea9d3e;
 }
 
 .workout-title{
@@ -142,42 +142,87 @@
 
 /* EXERCISE PAGE STYLING */
 
-.e-card{
-  justify-content: space-between;
-  margin: 20px;
-  padding: 20px;
-  width: 75px;
-  height: 25px;
+
+
+.e-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.e-card-container {
   display: flex;
-  grid-template-rows: 20px 50px 1fr 50px;
-  border-radius: 10px;
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
-  transform-style: preserve-3d;
-  background: radial-gradient(#FCD12A, #FCF4A3);
-  border: dashed;
-}
-
-.cat-title{
-  background-color: #FCF4A3;
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-.e-container{
-  border: solid 2px;
-  margin: 4px;
-  text-align: center;
-}
-
-.e-card-container{
-  border: dotted;
-  display: flex;
-  flex: wrap;
-}
-
-.card-list{
-  display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+
+.e-card {
+  width: 300px;
+  height: 400px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.e-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 4px 8px #e5bd3f;
+}
+
+.exercise-picture {
+  width: 100%;
+  height: 60%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.e-card h2 {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  padding: 20px 0;
+  background-color: #fff;
+  width: 100%;
+  z-index: 1;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+
+/* Styles for the category title divs */
+.cat-title {
+  background-color: #ffcc00; /* Primary color background */
+  color: white; /* White text color */
+  font-size: 1.5em; /* Larger font size */
+  font-weight: bold; /* Bold text */
+  text-align: center; /* Centered text */
+  padding: 10px 20px; /* Padding around the text */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin: 20px 0; /* Margin around the title */
+  text-transform: uppercase; /* Uppercase text */
+  letter-spacing: 1px; /* Spacing between letters */
+}
+
+
+/* Container holding each category group */
+.e-container {
+  margin-bottom: 40px; /* Space between different category sections */
+}
+
+/* Card list styles */
+.card-list {
+  display: flex;
+  flex-wrap: wrap; /* Wrap cards to the next line if they don't fit */
+  gap: 20px; /* Space between each card */
+  justify-content: center; /* Center cards horizontally */
 }

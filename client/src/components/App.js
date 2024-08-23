@@ -49,7 +49,7 @@ function App() {
           <Home />
         </Route>
         <Route path="/workouts">
-          <WorkoutList onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts}/>
+          <WorkoutList exercises={exercises} onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts}/>
         </Route>
         <Route exact path="/exercises">
           <ExerciseList onNewExerciseSubmit={onNewExerciseSubmit} exercises={exercises}/>

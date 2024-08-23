@@ -3,9 +3,11 @@ import Exercise from "./Exercise";
 
 function NewExercise({onExerciseSubmit}){
     const [name, setName] = useState("")
-    const [category, setCategory] = useState(['Chest', 'Upper Back', 'Lower Back', 'Arms', 'Abs', 'Legs', 'Shoulders', 'Cardio'])
+    const [category, setCategory] = useState("")
     const [picture, setPicture] = useState("")
     const [description, setDescription] = useState("")
+
+    const categories = ['Chest', 'Upper Back', 'Lower Back', 'Arms', 'Abs', 'Legs', 'Shoulders', 'Cardio']
 
     function handleSubmit(event){
         const newExercise = {
@@ -41,7 +43,7 @@ function NewExercise({onExerciseSubmit}){
             onChange={(e) => setCategory(e.target.value)}
             >
                 <option value="">Select Category...</option>
-                { category.map(cate => (
+                { categories.map(cate => (
                     <option value={cate}>{cate}</option>
                 ))}
             </select>

@@ -2,11 +2,11 @@ import React from "react";
 import WorkoutCard from "./WorkoutCard";
 import NewWorkout from "./NewWorkout";
 
-function WorkoutList({onNewWorkoutSubmit, workouts}) {
+function WorkoutList({onNewWorkoutSubmit, workouts, exercises}) {
 
     return (
         <>
-        <NewWorkout onNewWorkoutSubmit={onNewWorkoutSubmit}/>
+        <NewWorkout exercises={exercises} onNewWorkoutSubmit={onNewWorkoutSubmit}/>
         <h1 className="workout-title">Workouts</h1>
             <div className="workout-container">
             {

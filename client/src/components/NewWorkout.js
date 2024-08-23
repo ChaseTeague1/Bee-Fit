@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-function NewWorkout({onNewWorkoutSubmit}){
+function NewWorkout({onNewWorkoutSubmit, exercises}){
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [duration, setDuration] = useState("")
@@ -33,7 +33,7 @@ function NewWorkout({onNewWorkoutSubmit}){
             <input onChange={(e) => setTitle(e.target.value)} value={title} type="text" placeholder="Enter title..."/>
             <input onChange={(e) => setDescription(e.target.value)} value={description} type="text" placeholder="Enter description..."/>
             <input onChange={(e) => setDuration(e.target.value)} value={duration} type="text" placeholder="Enter duration..."/>
-            <button type="submit">Add New Workout</button>
+            <button>Add New Workout</button>
         </form>
     )
 }
