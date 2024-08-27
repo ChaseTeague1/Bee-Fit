@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
 
 
-function WorkoutCard({ workout }) {
+function WorkoutCard({ onDelete, workout }) {
     const [isFlipped, setIsFlipped] = useState(false);
 
     const handleClick = () => {
         setIsFlipped(!isFlipped);
     };
 
+
+
     return (
         <div className="workout-card-container">
+            
             <div 
                 onClick={handleClick} 
                 className={`workout-card ${isFlipped ? 'flip' : ''}`}
@@ -30,10 +33,12 @@ function WorkoutCard({ workout }) {
                                     </Link>
                                 </li>
                             </ul>
+                            
                         ))}
                     </ul>
                 </div>
             </div>
+            <button onClick={() => onDelete(workout.id)}>Delete</button>
         </div>
     );
 }

@@ -38,13 +38,24 @@ function App() {
     setExercises([...exercises, newExercise]);
   }
 
+  function handleDeleteWorkout(id){
+    fetch(`/workouts/${id}`, {
+      method:'DELETE',
+    })
+    .then(res => {
+      if (res.ok) {
+        setWorkouts((workouts) => workouts.filter((workout) => workout.id !== id))
+      }
+    })
+  }
+
   return (
     <div className="app-container">
       <NavBar />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/workouts">
-          <WorkoutList exercises={exercises} onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts} />
+          <WorkoutList handleDeleteWorkout={handleDeleteWorkout} exercises={exercises} onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts} />
         </Route>
         <Route exact path="/exercises">
           <ExerciseList onNewExerciseSubmit={onNewExerciseSubmit} exercises={exercises} />

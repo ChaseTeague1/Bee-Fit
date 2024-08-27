@@ -2,7 +2,7 @@ import React from "react";
 import WorkoutCard from "./WorkoutCard";
 import NewWorkout from "./NewWorkout";
 
-function WorkoutList({onNewWorkoutSubmit, workouts, exercises}) {
+function WorkoutList({handleDeleteWorkout, onNewWorkoutSubmit, workouts, exercises}) {
 
     return (
         <>
@@ -11,7 +11,9 @@ function WorkoutList({onNewWorkoutSubmit, workouts, exercises}) {
             <div className="workout-container">
             {
                 workouts.map(workout => (
-                    <WorkoutCard key={workout.id} workout={workout}/>
+                    <div>
+                    <WorkoutCard key={workout.id} workout={workout} onDelete={handleDeleteWorkout}/>
+                    </div>
                 ))
             }
             </div>

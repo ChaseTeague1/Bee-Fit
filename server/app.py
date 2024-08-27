@@ -94,11 +94,13 @@ class WorkoutById(Resource):
     def delete(self, id):
         workout = Workout.query.filter(Workout.id == id).first()
         
-        db.session.delete(workout)
-        db.session.commit()
+        if workout:
+            db.session.delete(workout)
+            db.session.commit()
 
-        body = {'message' : 'Workout deleted!'}
-        return make_response(body.to_dict(), 204)
+            body = {}
+            return make_response(body, 204)
+        return {'error':'Workout not found'} , 404
 api.add_resource(WorkoutById, '/workouts/<int:id>')
 
 if __name__ == '__main__':
