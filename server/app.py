@@ -90,6 +90,17 @@ class ExerciseById(Resource):
 
 api.add_resource(ExerciseById, '/exercises/<int:id>')
 
+class WorkoutById(Resource):
+    def delete(self, id):
+        workout = Workout.query.filter(Workout.id == id).first()
+        
+        db.session.delete(workout)
+        db.session.commit()
+
+        body = {'message' : 'Workout deleted!'}
+        return make_response(body.to_dict(), 204)
+api.add_resource(WorkoutById, '/workouts/<int:id>')
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
 

@@ -8,59 +8,51 @@ import ExerciseList from "./ExerciseList";
 import ExerciseDetail from "./ExerciseDetail";
 
 function App() {
-  const [users, setUsers] = useState([])
-  const [searchInput, setSearchInput] = useState("")
-  const [workouts, setWorkouts] = useState([])
-  const [exercises, setExercises] = useState([])
-
-  const categories = ['Chest', 'Arms', 'Upper Back', 'Lower Back', 'Legs', 'Abs']
+  const [users, setUsers] = useState([]);
+  const [workouts, setWorkouts] = useState([]);
+  const [exercises, setExercises] = useState([]);
 
   useEffect(() => {
     fetch('/users')
-    .then(res => res.json())
-    .then(data => setUsers(data))
-  }, [])
+      .then(res => res.json())
+      .then(data => setUsers(data));
+  }, []);
 
   useEffect(() => {
     fetch('/workouts')
-    .then(res => res.json())
-    .then(data => setWorkouts(data))
-  }, [])
+      .then(res => res.json())
+      .then(data => setWorkouts(data));
+  }, []);
 
   useEffect(() => {
     fetch('/exercises')
-    .then(res => res.json())
-    .then(data => setExercises(data))
-  }, [])
+      .then(res => res.json())
+      .then(data => setExercises(data));
+  }, []);
 
-  function onNewWorkoutSubmit(newWorkout){
-    setWorkouts([...workouts, newWorkout])
+  function onNewWorkoutSubmit(newWorkout) {
+    setWorkouts([...workouts, newWorkout]);
   }
 
-  function onNewExerciseSubmit(newExercise){
-    setExercises([...exercises, newExercise])
+  function onNewExerciseSubmit(newExercise) {
+    setExercises([...exercises, newExercise]);
   }
 
   return (
     <div className="app-container">
       <NavBar />
       <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
+        <Route exact path="/" component={Home} />
         <Route path="/workouts">
-          <WorkoutList exercises={exercises} onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts}/>
+          <WorkoutList exercises={exercises} onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts} />
         </Route>
         <Route exact path="/exercises">
-          <ExerciseList onNewExerciseSubmit={onNewExerciseSubmit} exercises={exercises}/>
+          <ExerciseList onNewExerciseSubmit={onNewExerciseSubmit} exercises={exercises} />
         </Route>
-        <Route 
-        path="/exercises/:id" 
-        render ={(props) => <ExerciseDetail {...props} exercises={exercises}/>}
-        />
+        <Route path="/exercises/:id" render={(props) => <ExerciseDetail {...props} exercises={exercises} />} />
       </Switch>
     </div>
-  )
+  );
 }
 
 export default App;

@@ -1,11 +1,13 @@
 import React, {useState} from "react";
+import {useFormik} from 'formik';
+import * as yup from "yup";
 
-function NewWorkout({onNewWorkoutSubmit, exercises}){
-    const [title, setTitle] = useState("")
+
+    /*const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
-    const [duration, setDuration] = useState("")
+    const [duration, setDuration] = useState("") */
 
-    function handleSubmit(event){
+ /*   function handleSubmit(event){
         const newWorkout = {
             title: title,
             description: description,
@@ -26,14 +28,63 @@ function NewWorkout({onNewWorkoutSubmit, exercises}){
             setDescription("")
             setDuration("")
         })
-    }
+    } */
+function NewWorkout({onNewWorkoutSubmit}){
+
+    const formik = useFormik({
+        initialValues: {
+            title: '',
+            duration: '',
+            description:'',
+        },
+        onSubmit: (values, {setSubmitting, resetForm}) => {
+            fetch('/workouts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(values),
+            })
+            .then(res => res.json())
+            .then(data => {
+                onNewWorkoutSubmit(data)
+                resetForm();
+            })
+            .finally(() =>
+            setSubmitting(false)
+        )
+        }
+    })
+
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input onChange={(e) => setTitle(e.target.value)} value={title} type="text" placeholder="Enter title..."/>
-            <input onChange={(e) => setDescription(e.target.value)} value={description} type="text" placeholder="Enter description..."/>
-            <input onChange={(e) => setDuration(e.target.value)} value={duration} type="text" placeholder="Enter duration..."/>
-            <button>Add New Workout</button>
+        <form onSubmit={formik.handleSubmit}>
+            <label>Title</label>
+            <input 
+            id='title'
+            name="title"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.title}
+            />
+
+            <input 
+            id='duration'
+            name="duration"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.duration}
+            />
+
+            <input 
+            id="description"
+            name="description"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.description}
+            />
+
+            <button type="submit">Submit</button>
         </form>
     )
 }
