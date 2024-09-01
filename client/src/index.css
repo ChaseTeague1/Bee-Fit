@@ -15,55 +15,50 @@
 
 /* WORKOUT PAGE STYLING */
 
-.workout-card {
-  justify-content: space-between;
-  position: relative;
-  margin: 20px;
-  padding: 20px;
-  width: 500px;
-  min-height: 200px;
+.workout-container {
   display: grid;
-  grid-template-rows: 20px 50px 1fr 50px;
-  border-radius: 10px;
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-  background: radial-gradient(#eec33d, #e5bd3f);
-
+  grid-template-columns: 1fr 1fr; /* Creates 2 equal columns */
+  gap: 20px;
+  margin: 20px;
 }
+
+.workout-card {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center; /* Center text inside the card */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.w-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.w-duration {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.w-description {
+  font-size: 1em;
+}
+
 
 .workout-card:hover{
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
   transform: scale(1.01);
 }
 
-.workout-card.flip{
-  transform: rotateY(180deg);
-}
 
-.workout-card .front, .workout-card .back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
+.workout-card-container a {
+  text-decoration: none;
+  color: inherit;
 }
-
-.workout-card .back {
-  transform: rotateY(180deg); 
-  justify-content: center;
-  display: flex;
-}
-
-.workout-card-container {
-  perspective: 1000px;
-}
-
-.workout-container{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
 
 .app-container{
   margin: 5px;
@@ -110,23 +105,6 @@
   text-align: center;
 }
 
-.w-title{
-  margin-top: 5px;
-  text-align: center;
-  padding: 5px;
-}
-
-.w-description{
-  padding-top: 40px;
-  font-weight: lighter;
-  text-align: center;
-  margin: 0px;
-}
-
-.w-duration{
-  text-align: center;
-  margin: 0px;
-}
 
 .e-list{
   display: flex;
@@ -225,4 +203,89 @@
   flex-wrap: wrap; /* Wrap cards to the next line if they don't fit */
   gap: 20px; /* Space between each card */
   justify-content: center; /* Center cards horizontally */
+}
+
+
+
+
+.button-container {
+  display: flex;
+  justify-content: center; /* Centers the button horizontally */
+  margin-bottom: 20px; /* Optional: adds some space below the button */
+}
+
+.open-window-btn {
+  padding: 10px 20px;
+  background-color: #ea9d3e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: black;
+}
+
+.window-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.window-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  min-height: 500px;
+}
+
+.close-window-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ea9d3e;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 30px;
+  text-align: center;
+}
+
+.input-field{
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  display: flex;
+  padding: 5px;
+  margin: 5px;
+  width: 300px;
+  outline: none;
+}
+
+.add-btn{
+  border-radius: 5px;
+  position: absolute;
+  bottom: 15px;
+  left: 200px;
+}
+
+.window-delete {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  width: 90%;
+  max-width: 500px;
 }

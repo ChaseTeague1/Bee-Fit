@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import NavBar from "./NavBar";
 import Home from "./Home";
-import NewWorkout from "./NewWorkout";
 import WorkoutList from "./WorkoutList";
 import ExerciseList from "./ExerciseList";
 import ExerciseDetail from "./ExerciseDetail";
+import WorkoutDetail from "./WorkoutDetail";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -49,18 +49,30 @@ function App() {
     })
   }
 
+  function handleDeleteExercise(id){
+    fetch(`/exercises/${id}`, {
+      method: 'DELETE',
+    })
+    .then(res => {
+      if (res.ok) {
+        setExercises((exercises) => exercises.filter((exercise) => exercise.id !== id))
+      }
+    })
+  }
+
   return (
     <div className="app-container">
       <NavBar />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/workouts">
+        <Route exact path="/workouts">
           <WorkoutList handleDeleteWorkout={handleDeleteWorkout} exercises={exercises} onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts} />
         </Route>
         <Route exact path="/exercises">
-          <ExerciseList onNewExerciseSubmit={onNewExerciseSubmit} exercises={exercises} />
+          <ExerciseList onDelete={handleDeleteExercise} onNewExerciseSubmit={onNewExerciseSubmit} exercises={exercises} />
         </Route>
         <Route path="/exercises/:id" render={(props) => <ExerciseDetail {...props} exercises={exercises} />} />
+        <Route path="/workouts/:id" render={(props) => <WorkoutDetail {...props} workouts={workouts} />} />
       </Switch>
     </div>
   );

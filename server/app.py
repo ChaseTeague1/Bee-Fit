@@ -87,10 +87,24 @@ class ExerciseById(Resource):
             return make_response(exercise.to_dict(), 200)
         except ValueError:
             return {'error': 'Could not find exercise'}
+        
+    def delete(self, id):
+        exercise = Exercise.query.filter(Exercise.id == id).first()
+        if exercise:
+            db.session.delete(exercise)
+            db.session.commit()
+            
+            body ={}
+            return make_response(body, 204)
 
 api.add_resource(ExerciseById, '/exercises/<int:id>')
 
 class WorkoutById(Resource):
+    def get(self,id):
+        workout = Workout.query.filter(Workout.id == id).first()
+
+        return make_response(workout.to_dict(), 200)
+
     def delete(self, id):
         workout = Workout.query.filter(Workout.id == id).first()
         

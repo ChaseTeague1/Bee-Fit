@@ -1,8 +1,19 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 
-function Exercise({ exercise }) {
+function Exercise({onDelete, exercise }) {
+    const [window, setWindow] = useState(false)
+
+    function closeWindow(){
+        setWindow(false)
+    }
+
+    function openWindow(){
+        setWindow(true)
+    }
+
     return (
+        <div>
         <Link to={`/exercises/${exercise.id}`} className="e-card-link">
             <div className="e-card-container">
                 <div className="e-card">
@@ -11,6 +22,20 @@ function Exercise({ exercise }) {
                 </div>
             </div>
         </Link>
+
+        <button onClick={openWindow}>Delete</button>
+        {
+            window && (
+                <div className="window-overlay">
+                    <div className="window-delete">
+                        <p>Are you sure you want to delete {exercise.name}?</p>
+                        <button onClick={closeWindow}>Cancel</button>
+                        <button className="delete-exercise" onClick={() => onDelete(exercise.id)}>Delete</button>
+                    </div>
+                </div>
+            )
+        }
+        </div>
     );
 }
 

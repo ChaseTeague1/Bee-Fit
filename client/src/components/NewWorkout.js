@@ -3,32 +3,6 @@ import {useFormik} from 'formik';
 import * as yup from "yup";
 
 
-    /*const [title, setTitle] = useState("")
-    const [description, setDescription] = useState("")
-    const [duration, setDuration] = useState("") */
-
- /*   function handleSubmit(event){
-        const newWorkout = {
-            title: title,
-            description: description,
-            duration: duration
-        }
-        event.preventDefault()
-        fetch('/workouts', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newWorkout)
-        })
-        .then(res => res.json())
-        .then(data => {
-            onNewWorkoutSubmit(data)
-            setTitle("")
-            setDescription("")
-            setDuration("")
-        })
-    } */
 function NewWorkout({onNewWorkoutSubmit}){
 
     const formik = useFormik({
@@ -61,6 +35,7 @@ function NewWorkout({onNewWorkoutSubmit}){
         <form onSubmit={formik.handleSubmit}>
             <label>Title</label>
             <input 
+            className="input-field"
             id='title'
             name="title"
             type="text"
@@ -68,7 +43,9 @@ function NewWorkout({onNewWorkoutSubmit}){
             value={formik.values.title}
             />
 
+            <label>Duration (min)</label>
             <input 
+            className="input-field"
             id='duration'
             name="duration"
             type="text"
@@ -76,7 +53,9 @@ function NewWorkout({onNewWorkoutSubmit}){
             value={formik.values.duration}
             />
 
-            <input 
+            <label>Description</label>
+            <textarea 
+            className="input-field"
             id="description"
             name="description"
             type="text"
