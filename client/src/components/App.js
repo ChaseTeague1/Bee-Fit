@@ -6,17 +6,37 @@ import WorkoutList from "./WorkoutList";
 import ExerciseList from "./ExerciseList";
 import ExerciseDetail from "./ExerciseDetail";
 import WorkoutDetail from "./WorkoutDetail";
+import Login from "./Login";
 
 function App() {
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState(null);
   const [workouts, setWorkouts] = useState([]);
   const [exercises, setExercises] = useState([]);
+  const [users, setUsers] = useState([]);
+
+
+  useEffect(() => {
+    fetch('/check_session')
+      .then(res => res.json())
+      .then(data => {
+        console.log("Checking data: ", data )
+        setUser(data)
+      });
+  }, []);
+
+  function handleLogin(user){
+    setUser(user);
+  }
+
+  function handleLogout(){
+    setUser(null)
+  }
 
   useEffect(() => {
     fetch('/users')
-      .then(res => res.json())
-      .then(data => setUsers(data));
-  }, []);
+    .then(res => res.json())
+    .then(data => setUsers(data))
+  }, [])
 
   useEffect(() => {
     fetch('/workouts')
@@ -36,6 +56,10 @@ function App() {
 
   function onNewExerciseSubmit(newExercise) {
     setExercises([...exercises, newExercise]);
+  }
+
+  function onNewUserSubmit(newUser){
+    setUsers([...users, newUser]);
   }
 
   function handleDeleteWorkout(id){
@@ -62,7 +86,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <NavBar />
+      <NavBar users={users} user={user} onLogout={handleLogout} onNewUserSubmit={onNewUserSubmit}/>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/workouts">
@@ -70,6 +94,9 @@ function App() {
         </Route>
         <Route exact path="/exercises">
           <ExerciseList onDelete={handleDeleteExercise} onNewExerciseSubmit={onNewExerciseSubmit} exercises={exercises} />
+        </Route>
+        <Route exact path='/login'>
+          <Login onLogin={handleLogin}/>
         </Route>
         <Route path="/exercises/:id" render={(props) => <ExerciseDetail {...props} exercises={exercises} />} />
         <Route path="/workouts/:id" render={(props) => <WorkoutDetail {...props} workouts={workouts} />} />

@@ -19,13 +19,61 @@ from models import User, Workout, Exercise, workout_exercise
 def index():
     return '<h1>Project Server</h1>'
 
+# Login Routes
+
+class Login(Resource):
+    def post(self):
+        username = request.get_json()['username']
+        user = User.query.filter(User.name == username).first()
+
+        session['user_id'] = user.id
+
+        return make_response(user.to_dict(), 200)
+
+api.add_resource(Login, '/login')
+
+class Logout(Resource):
+    def delete(self):
+        session['user_id'] = None
+        return {}, 204
+
+api.add_resource(Logout, '/logout')
+
+class CheckSession(Resource):
+    def get(self):
+        user_id = session.get('user_id')
+        if user_id:
+            user = User.query.filter(User.id == user_id).first()
+            if user:
+                return make_response(user.to_dict(), 200)
+        return {}, 401
+
+api.add_resource(CheckSession, '/check_session')
+
+# User Routes
+
 class Users(Resource):
     def get(self):
         users = [user.to_dict() for user in User.query.all()]
         return make_response(users, 200)
+    
+    def post(self):
+        data = request.get_json()
+
+        new_user = User(
+            name = data['name'],
+            email = data['email']
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+        return make_response(new_user.to_dict(), 201)
 
 api.add_resource(Users, '/users')
 
+
+
+# Workout Routes
 
 class Workouts(Resource):
     def get(self):
@@ -46,6 +94,26 @@ class Workouts(Resource):
         return make_response(new_workout.to_dict(), 201)
 
 api.add_resource(Workouts, '/workouts')
+
+class WorkoutById(Resource):
+    def get(self,id):
+        workout = Workout.query.filter(Workout.id == id).first()
+
+        return make_response(workout.to_dict(), 200)
+
+    def delete(self, id):
+        workout = Workout.query.filter(Workout.id == id).first()
+        
+        if workout:
+            db.session.delete(workout)
+            db.session.commit()
+
+            body = {}
+            return make_response(body, 204)
+        return {'error':'Workout not found'} , 404
+api.add_resource(WorkoutById, '/workouts/<int:id>')
+
+# Exercise Routes
 
 class Exercises(Resource):
     def get(self):
@@ -99,23 +167,6 @@ class ExerciseById(Resource):
 
 api.add_resource(ExerciseById, '/exercises/<int:id>')
 
-class WorkoutById(Resource):
-    def get(self,id):
-        workout = Workout.query.filter(Workout.id == id).first()
-
-        return make_response(workout.to_dict(), 200)
-
-    def delete(self, id):
-        workout = Workout.query.filter(Workout.id == id).first()
-        
-        if workout:
-            db.session.delete(workout)
-            db.session.commit()
-
-            body = {}
-            return make_response(body, 204)
-        return {'error':'Workout not found'} , 404
-api.add_resource(WorkoutById, '/workouts/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
