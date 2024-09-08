@@ -35,7 +35,6 @@ class Workout(db.Model, SerializerMixin):
     exercises = db.relationship('Exercise', secondary=workout_exercise, backref='workout')
     exercise_names = association_proxy('exercises', 'name')
 
-    serialize_rules = ('-user',)
 
 class Exercise(db.Model, SerializerMixin):
     __tablename__ = 'exercises'

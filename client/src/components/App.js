@@ -8,6 +8,14 @@ import ExerciseDetail from "./ExerciseDetail";
 import WorkoutDetail from "./WorkoutDetail";
 import Login from "./Login";
 
+
+/* Yup.array()
+.of(
+  Yup.string()
+    .required('You must select an item')  // Ensure an item is selected
+    .oneOf(itemOptions.map((option) => option.value), 'Invalid item selected') // Validate it is from the list
+) */
+
 function App() {
   const [user, setUser] = useState(null);
   const [workouts, setWorkouts] = useState([]);
@@ -90,7 +98,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/workouts">
-          <WorkoutList handleDeleteWorkout={handleDeleteWorkout} exercises={exercises} onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts} />
+          <WorkoutList users={users} handleDeleteWorkout={handleDeleteWorkout} exercises={exercises} onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts} />
         </Route>
         <Route exact path="/exercises">
           <ExerciseList onDelete={handleDeleteExercise} onNewExerciseSubmit={onNewExerciseSubmit} exercises={exercises} />

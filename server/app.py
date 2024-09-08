@@ -82,13 +82,23 @@ class Workouts(Resource):
     
     def post(self):
         data = request.get_json()
+        user_id = session.get('user_id')
 
         new_workout = Workout(
             title = data['title'],
             duration = data['duration'],
-            description = data['description']
+            description = data['description'],
+            user_id = user_id
         )
         db.session.add(new_workout)
+        db.session.commit()
+
+        exercise_ids = data.get('selectedExercises', [])
+        for exercise_id in exercise_ids:
+            exercise = Exercise.query.get(exercise_id)
+            if exercise:
+                new_workout.exercises.append(exercise)
+        
         db.session.commit()
 
         return make_response(new_workout.to_dict(), 201)

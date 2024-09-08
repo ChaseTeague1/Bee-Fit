@@ -59,7 +59,40 @@ function NewExercise({onExerciseSubmit}){
             setSubmitting(false)
         )
         }
-    }) */
+    }) 
+        
+    const itemOptions = [
+  { value: '', label: 'Select an option' }, // Empty option for placeholder
+  { value: 'option1', label: 'Option 1' },
+  { value: 'option2', label: 'Option 2' },
+  { value: 'option3', label: 'Option 3' },
+];
+
+// Yup validation schema
+const validationSchema = Yup.object({
+  items: Yup.array()
+    .of(
+      Yup.string()
+        .required('Selection is required')  // Ensure a selection is made
+        .oneOf(itemOptions.map(option => option.value), 'Invalid selection')  // Ensure valid option
+    )
+    .min(1, 'At least one item must be selected'),  // Ensure at least one selection
+});
+
+
+const itemOptions = ['', 'Option 1', 'Option 2', 'Option 3'];
+
+// Yup validation schema
+const validationSchema = Yup.object({
+  items: Yup.array()
+    .of(
+      Yup.string()
+        .required('You must select an option') // Require a selection
+        .oneOf(itemOptions, 'Invalid selection') // Ensure the selection is one of the valid strings
+    )
+    .min(1, 'At least one item must be selected') // Minimum one selection
+});
+    */
 
     return (
        <form onSubmit={handleSubmit}>

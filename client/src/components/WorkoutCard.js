@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function WorkoutCard({ onDelete, workout }) {
+function WorkoutCard({user, onDelete, workout }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isWindowOpen, setIsWindowOpen] = useState(false);
 
@@ -40,6 +40,7 @@ function WorkoutCard({ onDelete, workout }) {
                         <h1 className="w-title">{workout.title}</h1>
                         <p className="w-duration">{workout.duration} min</p>
                         <h3 className="w-description">{workout.description}</h3>
+                        <p>Created by: {workout.user ? workout.user.name : "Unknown"}</p>
                     </div>
                 </div>
             </Link>
