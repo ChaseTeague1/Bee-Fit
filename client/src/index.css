@@ -160,9 +160,8 @@
 }
 
 .nav-bar{
-  border: solid 4px;
   border-radius: 10px;
-  background-color: #e5bd3f;
+  background-image: linear-gradient(to right, #f9de8a, #fd8b17);
   margin: 5px;
   display: flex;
   justify-content: space-between;
@@ -292,7 +291,8 @@
 
 .cat-title {
   background-color: #ffcc00;
-  color: white;
+  width: 75%;
+  color: black;
   font-size: 1.5em;
   font-weight: bold; 
   text-align: center;
@@ -307,6 +307,9 @@
 
 .e-container {
   margin-bottom: 40px; 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 /* Card list styles */

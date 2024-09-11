@@ -1,48 +1,54 @@
-import React, { useState } from "react";
+import React from "react";
+import { useFormik } from "formik";
 
 function Signup({onNewUserSubmit}){
-    const [name, setName] = useState("")
-    const [email, setEmail] = useState("")
 
-    function handleSubmit(e){
-        const newUser = {
-            name: name,
-            email: email
+    const formik = useFormik({
+        initialValues : {
+            name:'',
+            email: ''
+        },
+        onSubmit: (values, {setSubmitting, resetForm}) => {
+            fetch('/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(values),
+            })
+            .then(res => res.json())
+            .then(data => {
+                onNewUserSubmit(data)
+                resetForm();
+            })
+            .finally(() =>
+            setSubmitting(false)
+        )
         }
-        e.preventDefault();
-        fetch('/users', {
-            method: "POST",
-            headers: {
-                'Content-Type' :'application/json'
-            },
-            body: JSON.stringify(newUser)
-        })
-        .then(res => res.json())
-        .then(data => {
-            onNewUserSubmit(data)
-            setEmail("")
-            setName("")
-        })
-    }
+    }) 
 
 
     return (
         <div className="signup-form-container">
-        <form className="form" onSubmit={handleSubmit}>
+        <form className="form" onSubmit={formik.handleSubmit}>
             <h1>Sign Up Today!</h1>
             <input 
             className="form-input"
             placeholder="Enter Username..."
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            id="name"
+            name="name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
             />
             <input 
+            id="email"
+            name="email"
             className="form-input"
             placeholder="Enter Email..."
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formik.values.email}
+            onChange={formik.handleChange}
             />
             <button className="form-btn" type="submit">Sign Up!</button>
         </form>

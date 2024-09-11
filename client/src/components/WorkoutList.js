@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import WorkoutCard from "./WorkoutCard";
 import NewWorkout from "./NewWorkout";
 
-function WorkoutList({handleDeleteWorkout, onNewWorkoutSubmit, workouts, exercises, users}) {
+function WorkoutList({handleDeleteWorkout, onNewWorkoutSubmit, workouts, exercises, users, onUpdate}) {
     const [newWorkoutWindow, setNewWorkoutWindow] = useState(false)
 
     function openWindow(){
@@ -39,7 +39,7 @@ function WorkoutList({handleDeleteWorkout, onNewWorkoutSubmit, workouts, exercis
             {
                 workouts.map(workout => (
                     <div>
-                    <WorkoutCard user={users} key={workout.id} workout={workout} onDelete={handleDeleteWorkout}/>
+                    <WorkoutCard exercises={exercises} onUpdate={onUpdate} user={users} key={workout.id} workout={workout} onDelete={handleDeleteWorkout}/>
                     </div>
                 ))
             }

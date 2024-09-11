@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import EditWorkoutForm from './EditWorkoutForm';
 
-function WorkoutCard({user, onDelete, workout }) {
+function WorkoutCard({exercises, onUpdate, onDelete, workout }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isWindowOpen, setIsWindowOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -15,12 +17,23 @@ function WorkoutCard({user, onDelete, workout }) {
 
     const closeWindow = () => {
         setIsWindowOpen(false);
+        setIsEditing(false)
     };
 
     const handleDelete = () => {
         onDelete(workout.id);
         closeWindow();
     };
+
+    const handleEdit = () => {
+        setIsEditing(true);
+        setIsMenuOpen(false)
+    }
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+    }
+
 
     return (
         <div className="workout-card-container">
@@ -31,6 +44,7 @@ function WorkoutCard({user, onDelete, workout }) {
                 {isMenuOpen && (
                     <div className="menu-dropdown">
                         <button className="delete-btn" onClick={openWindow}>Delete</button>
+                        <button className='delete-btn' onClick={handleEdit}>Edit</button>
                     </div>
                 )}
             </div>
@@ -53,6 +67,21 @@ function WorkoutCard({user, onDelete, workout }) {
                     </div>
                 </div>
             )}
+            {
+                isEditing && (
+                    <div className='window-overlay'>
+                        <div className='window-content'>
+                            <EditWorkoutForm 
+                            workout={workout}
+                            exercises={exercises}
+                            onUpdate={onUpdate}
+                            onCancel={handleCancelEdit}
+                            onClose={closeWindow}
+                            />
+                        </div>
+                    </div>
+                )
+            }
         </div>
     );
 }

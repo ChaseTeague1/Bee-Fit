@@ -92,13 +92,21 @@ function App() {
     })
   }
 
+  function handleUpdateWorkout(updatedWorkout){
+    setWorkouts(
+      workouts.map(workout =>
+        workout.id == updatedWorkout.id ? updatedWorkout : workout
+      )
+    )
+  }
+
   return (
     <div className="app-container">
       <NavBar users={users} user={user} onLogout={handleLogout} onNewUserSubmit={onNewUserSubmit}/>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/workouts">
-          <WorkoutList users={users} handleDeleteWorkout={handleDeleteWorkout} exercises={exercises} onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts} />
+          <WorkoutList onUpdate={handleUpdateWorkout} users={users} handleDeleteWorkout={handleDeleteWorkout} exercises={exercises} onNewWorkoutSubmit={onNewWorkoutSubmit} workouts={workouts} />
         </Route>
         <Route exact path="/exercises">
           <ExerciseList onDelete={handleDeleteExercise} onNewExerciseSubmit={onNewExerciseSubmit} exercises={exercises} />

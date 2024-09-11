@@ -87,7 +87,7 @@ function NewWorkout({ onNewWorkoutSubmit, exercises }) {
             {exercise.name}
             </label>
         ))}
-</div>
+    </div>
       <button type="submit">Submit</button>
     </form>
   );

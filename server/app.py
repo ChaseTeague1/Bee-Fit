@@ -121,6 +121,26 @@ class WorkoutById(Resource):
             body = {}
             return make_response(body, 204)
         return {'error':'Workout not found'} , 404
+    
+
+    def patch(self, id):
+        workout = Workout.query.filter(Workout.id == id).first()
+        data = request.get_json()
+
+        for attr in data:
+            if attr != 'selectedExercises':  
+                setattr(workout, attr, data[attr])
+    
+        if 'selectedExercises' in data:
+            exercise_ids = data['selectedExercises'] 
+            exercises = Exercise.query.filter(Exercise.id.in_(exercise_ids)).all()
+            workout.exercises = exercises
+
+        db.session.add(workout)
+        db.session.commit()
+
+        return make_response(workout.to_dict(), 200)
+
 api.add_resource(WorkoutById, '/workouts/<int:id>')
 
 # Exercise Routes
