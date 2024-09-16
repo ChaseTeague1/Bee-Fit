@@ -1,6 +1,7 @@
 import React from "react";
 import {useHistory} from 'react-router-dom'
 import { useFormik } from "formik";
+import * as Yup from 'yup';
 
 function Login({onLogin}){
     const history = useHistory();
@@ -11,6 +12,10 @@ function Login({onLogin}){
             username:'',
             email: ''
         },
+        validationSchema: Yup.object({
+            username: Yup.string().required('Required'),
+            email: Yup.string().email('Invalid email address').required('Required'),
+        }),
         onSubmit: (values, {setSubmitting, resetForm}) => {
             fetch('/login', {
                 method: 'POST',

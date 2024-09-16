@@ -52,8 +52,7 @@ function WorkoutCard({exercises, onUpdate, onDelete, workout }) {
                 <div className='workout-card'>
                     <div className="front">
                         <h1 className="w-title">{workout.title}</h1>
-                        <p className="w-duration">{workout.duration} min</p>
-                        <h3 className="w-description">{workout.description}</h3>
+                        <p className="w-duration">Duration: {workout.duration} min</p>
                         <p>Created by: {workout.user ? workout.user.name : "Unknown"}</p>
                     </div>
                 </div>

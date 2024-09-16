@@ -1,7 +1,23 @@
 import React from "react";
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 function NewWorkout({ onNewWorkoutSubmit, exercises }) {
+
+    const validationSchema = Yup.object({
+        title : Yup.string()
+                .max(15, 'Title must be 15 characters or less')
+                .required('Required'),
+        duration: Yup.number()
+                .required('Required'),
+        description: Yup.string()
+                .min(10, 'Description must be atleast 10 characters')
+                .required('Required'), 
+        selectedExercises: Yup.array()
+                .min(1, 'You must select at least one exercise')
+                .of(Yup.string().required('Exercise selection is required'))
+    })
+
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -9,6 +25,7 @@ function NewWorkout({ onNewWorkoutSubmit, exercises }) {
       description: '',
       selectedExercises: [], 
     },
+    validationSchema,
     onSubmit: (values, { setSubmitting, resetForm }) => {
       fetch('/workouts', {
         method: 'POST',
@@ -45,6 +62,7 @@ function NewWorkout({ onNewWorkoutSubmit, exercises }) {
   return (
     <form onSubmit={formik.handleSubmit}>
       <label>Title</label>
+      {formik.errors.title && <div>{formik.errors.title}</div>}
       <input
         className="input-field"
         id="title"
@@ -55,6 +73,7 @@ function NewWorkout({ onNewWorkoutSubmit, exercises }) {
       />
 
       <label>Duration (min)</label>
+      {formik.errors.duration && <div>{formik.errors.duration}</div>}
       <input
         className="input-field"
         id="duration"
@@ -65,6 +84,7 @@ function NewWorkout({ onNewWorkoutSubmit, exercises }) {
       />
 
       <label>Description</label>
+      {formik.errors.description && <div>{formik.errors.description}</div>}
       <textarea
         className="input-field"
         id="description"
@@ -74,6 +94,7 @@ function NewWorkout({ onNewWorkoutSubmit, exercises }) {
       />
 
     <label>Select Exercises</label>
+    {formik.errors.selectedExercises && <div>{formik.errors.selectedExercises}</div>}
     <div className="checkbox-container">
         {exercises.map((exercise) => (
         <label key={exercise.id} className="checkbox-label">

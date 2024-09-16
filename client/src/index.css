@@ -5,7 +5,9 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
-
+* {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
 
 .app-container {
   background-color: #312f17;
@@ -13,13 +15,76 @@
   width: 100%;
 }
 
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 500px; /* Adjust this height based on your needs */
+  overflow: hidden; /* Ensures nothing escapes the container */
+}
+
+.home-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image scales properly */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(255, 202, 137, 0.349) 50%, #312f17 80%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+h1, p {
+  margin: 0;
+}
+
+.home-title{
+  position: relative;
+  text-align: center;
+  bottom: 400px;
+  display: grid;
+  gap: 20px;
+  font-size: 40px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  color: rgba(255, 255, 255, 0.752);
+  text-shadow: 0px 2px 4px black;
+}
+
+.home-title p {
+  font-size: 30px;
+}
+
+.home-body{
+  position: relative;
+  bottom: 200px;
+  display: grid;
+  text-align: center;
+  color: rgb(247, 189, 28);
+  text-shadow: 0px 2px 4px black;
+}
+
+.home-body li{
+  list-style-position: inside;
+}
+
 /* WORKOUT PAGE STYLING */
 
 .workout-card-container {
   position: relative; 
-  background-color: #f9f9f9;
+  background: linear-gradient(to right, #feb04b 50%, rgba(255, 131, 6, 0.833) 90%);
   border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.997);
   padding: 20px;
   text-align: center; 
   display: flex;
@@ -94,13 +159,15 @@
 
 .workout-container {
   display: grid;
-  grid-template-columns: 1fr 1fr; 
+  grid-template-columns: 1fr; 
   gap: 20px;
   margin: 20px;
 }
 
 .workout-card {
-  background-color: #f9f9f9;
+  background-color: #ffa733a6;
+  background: none;
+  color: black;
   border-radius: 10px;
   padding: 20px;
   text-align: center;
@@ -108,6 +175,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-width: 100%;
+  min-width: 100%;
 }
 
 .w-title {
@@ -161,7 +230,7 @@
 
 .nav-bar{
   border-radius: 10px;
-  background-image: linear-gradient(to right, #f9de8a, #fd8b17);
+  background-image: linear-gradient(to right, rgb(255, 202, 137), #fd8a1700);
   margin: 5px;
   display: flex;
   justify-content: space-between;
@@ -201,8 +270,13 @@
   margin-right: 20px;
   padding: none;
   text-decoration: none;
-  color: #333;
+  color: #ffffff;
   font-weight: bold;
+  text-shadow: 0px 2px 4px black;
+}
+
+.nav-links:hover{
+  color: rgb(255, 183, 0);
 }
 
 .nav-links-container {
@@ -218,21 +292,91 @@
 }
 
 
-.e-list{
-  display: flex;
-  border: solid;
-  justify-content: center;
-  width: 200px;
-  border-radius: 10px;
-  margin: 4px;
-  background: radial-gradient(#FCF4A3, #FCD12A);
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
+.e-list:hover{
+  background-color: #ea9d3e;
+  cursor: pointer;
 }
 
+.link{
+  text-decoration: none;
+  color: black;
+}
+
+.w-detail-exercise ul{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  justify-items: center; 
+  align-items: center;   
+  padding: 0;           
+  list-style: none;     
+}
+
+.w-detail-container button{
+  padding: 5px;
+  width: 100px;
+  margin: 4px;
+  background-color: #ffeeb5;
+  border: none;
+}
+
+.w-detail-container button:hover{
+  background-color: #e5bd3f;
+  cursor: pointer;
+}
+
+.w-detail-container h2{
+  font-size: 35px;
+  color: rgb(255, 220, 162);
+  text-shadow: 0px 2px 4px black;
+  text-decoration: underline;
+  font-stretch: expanded;
+}
+
+.e-list {
+  background-color: #e5bd3f;
+  border-radius: 5px;
+  text-align: center;
+  height: 40px;
+  align-content: center;
+  margin: 2px;
+  display: flex;      
+  justify-content: center;
+  align-items: center;
+  min-width: 400px;
+}
 
 /* EXERCISE PAGE STYLING */
 
+.e-detail-container{
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
 
+.e-detail-container button{
+  padding: 5px;
+  width: 100px;
+  margin: 4px;
+  background-color: #ffeeb5;
+  border: none;
+}
+
+.e-detail-container button:hover{
+  background-color: #e5bd3f;
+  cursor: pointer;
+}
+
+
+.e-detail-container img{
+  max-width: 500px;
+  max-height: 500px;
+  min-width: 500px;
+  min-height: 500px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px white;
+  margin: 10px;
+}
 
 .e-card-link {
   text-decoration: none;
@@ -429,7 +573,7 @@
 
 .checkbox-container {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Two columns */
+  grid-template-columns: 1fr 1fr; 
   gap: 10px;
   margin: 10px 0;
 }
@@ -440,7 +584,7 @@
 }
 
 .checkbox-label input[type="checkbox"] {
-  margin-right: 10px; /* Space between checkbox and label */
+  margin-right: 10px; 
   width: 18px;
   height: 18px;
   cursor: pointer;
@@ -461,4 +605,13 @@
   display: block;
   text-align: center;
   line-height: 18px;
+}
+
+.w-detail-container{
+  text-align: center;
+}
+
+.w-detail-container h1{
+  color: rgb(255, 187, 0);
+  text-shadow: 0px 2px 4px black;
 }

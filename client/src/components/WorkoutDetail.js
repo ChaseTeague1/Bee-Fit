@@ -11,20 +11,21 @@ function WorkoutDetail({workouts}){
     }
       
     return (
-        <div>
+        <div className="w-detail-container">
             <h1>{workout.title}</h1>
+            <h3>{workout.description}</h3>
             <h2>Exercises</h2>
+            <div className="w-detail-exercise">
             <ul>
                 {workout.exercises.map(exercise => (
-                    <ul>
+                    <Link className="link" to={`/exercises/${exercise.id}`}>
                         <li className="e-list" key={exercise.id}>
-                            <Link to={`/exercises/${exercise.id}`}>
                             {exercise.name}
-                            </Link>
                         </li>
-                    </ul>      
+                        </Link>
                 ))}
             </ul>
+            </div>
             <button onClick={() => history.goBack()}>Back</button>
         </div>
         );

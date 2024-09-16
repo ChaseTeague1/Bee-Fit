@@ -11,7 +11,7 @@ function ExerciseDetail({ exercises }) {
   }
 
   return (
-    <div>
+    <div className="e-detail-container">
       <h2>{exercise.name}</h2>
       <p>{exercise.description}</p>
       <img src={exercise.picture}/>

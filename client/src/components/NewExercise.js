@@ -1,116 +1,95 @@
-import React, {useState} from "react";
+import React from "react";
 import { useFormik } from "formik";
-import Exercise from "./Exercise";
+import * as Yup from 'yup';
 
 function NewExercise({onExerciseSubmit}){
-    const [name, setName] = useState("")
-    const [category, setCategory] = useState("")
-    const [picture, setPicture] = useState("")
-    const [description, setDescription] = useState("")
+    const categories = ['Chest', 'Upper Back', 'Lower Back', 'Arms', 'Abs', 'Legs', 'Shoulders', 'Cardio'];
 
-    const categories = ['Chest', 'Upper Back', 'Lower Back', 'Arms', 'Abs', 'Legs', 'Shoulders', 'Cardio']
+    const validationSchema = Yup.object({
+        name: Yup.string()
+            .required('Exercise name is required')
+            .min(2, 'Name must be at least 2 characters long'),
+        category: Yup.string()
+            .required('Please select a category')
+            .oneOf(categories, 'Invalid category selection'),
+        picture: Yup.string()
+            .url('Enter a valid URL'),
+        description: Yup.string()
+            .required('Description is required')
+            .min(10, 'Description must be at least 10 characters long')
+    });
 
-    function handleSubmit(event){
-        const newExercise = {
-            name : name,
-            category : category,
-            picture : picture,
-            description: description
-        }
-        event.preventDefault()
-        fetch('/exercises', {
-            method: "POST",
-            headers: {
-                'Content-Type' :'application/json'
-            },
-            body: JSON.stringify(newExercise)
-        })
-        .then(res => res.json())
-        .then(data => {
-            onExerciseSubmit(data)
-            setCategory("")
-            setDescription("")
-            setName("")
-            setPicture("")
-        })
-    } 
-
-    /*const formik = useFormik({
-        initialValues : {
+    const formik = useFormik({
+        initialValues: {
             name: '',
-            category: [],
+            category: '',
             picture: '',
             description: '',
         },
-        onSubmit: (values, {setSubmitting, resetForm}) => {
+        validationSchema,
+        onSubmit: (values, { setSubmitting, resetForm }) => {
             fetch('/exercises', {
                 method: 'POST',
                 headers: {
-                    'Content-Type':'application/json'
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(values),
             })
             .then(res => res.json())
             .then(data => {
-                onExerciseSubmit(data)
+                onExerciseSubmit(data);
                 resetForm();
             })
-            .finally(() =>
-            setSubmitting(false)
-        )
-        }
-    }) 
-        
-    const itemOptions = [
-  { value: '', label: 'Select an option' }, // Empty option for placeholder
-  { value: 'option1', label: 'Option 1' },
-  { value: 'option2', label: 'Option 2' },
-  { value: 'option3', label: 'Option 3' },
-];
-
-// Yup validation schema
-const validationSchema = Yup.object({
-  items: Yup.array()
-    .of(
-      Yup.string()
-        .required('Selection is required')  // Ensure a selection is made
-        .oneOf(itemOptions.map(option => option.value), 'Invalid selection')  // Ensure valid option
-    )
-    .min(1, 'At least one item must be selected'),  // Ensure at least one selection
-});
-
-
-const itemOptions = ['', 'Option 1', 'Option 2', 'Option 3'];
-
-// Yup validation schema
-const validationSchema = Yup.object({
-  items: Yup.array()
-    .of(
-      Yup.string()
-        .required('You must select an option') // Require a selection
-        .oneOf(itemOptions, 'Invalid selection') // Ensure the selection is one of the valid strings
-    )
-    .min(1, 'At least one item must be selected') // Minimum one selection
-});
-    */
+            .finally(() => setSubmitting(false));
+        },
+    });
 
     return (
-       <form onSubmit={handleSubmit}>
-            <input className="input-field" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter exercise name..."/>
-            <textarea className="input-field" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Enter exercise description..."/>
+        <form onSubmit={formik.handleSubmit}>
+            {formik.errors.name && <div>{formik.errors.name}</div>}
+            <input
+                className="input-field"
+                name="name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                placeholder="Enter exercise name..."
+            />
+            
+            {formik.errors.description && <div>{formik.errors.description}</div>}
+            <textarea
+                className="input-field"
+                name="description"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                placeholder="Enter exercise description..."
+            />
+            
+            {formik.errors.category && <div>{formik.errors.category}</div>}
             <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+                name="category"
+                value={formik.values.category}
+                onChange={formik.handleChange}
             >
                 <option value="">Select Category...</option>
-                { categories.map(cate => (
-                    <option value={cate}>{cate}</option>
+                {categories.map(cate => (
+                    <option key={cate} value={cate}>{cate}</option>
                 ))}
             </select>
-            <input className="input-field" value={picture} onChange={(e) => setPicture(e.target.value)} placeholder="Enter exercise picture..."/>
-            <button className="add-btn" type="submit">Add new exercise</button>
+            
+            {formik.errors.picture && <div>{formik.errors.picture}</div>}
+            <input
+                className="input-field"
+                name="picture"
+                value={formik.values.picture}
+                onChange={formik.handleChange}
+                placeholder="Enter exercise picture URL..."
+            />
+
+            <button className="add-btn" type="submit" disabled={formik.isSubmitting}>
+                Add new exercise
+            </button>
         </form>
-    )
+    );
 }
 
 export default NewExercise;

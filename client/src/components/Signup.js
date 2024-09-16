@@ -1,5 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
+import * as Yup from 'yup';
 
 function Signup({onNewUserSubmit}){
 
@@ -8,6 +9,10 @@ function Signup({onNewUserSubmit}){
             name:'',
             email: ''
         },
+        validationSchema: Yup.object({
+            name: Yup.string().max(15, 'Name must be 15 characters or less').required('Required'),
+            email: Yup.string().email('Invalid email address').required('Required')
+        }),
         onSubmit: (values, {setSubmitting, resetForm}) => {
             fetch('/users', {
                 method: 'POST',
