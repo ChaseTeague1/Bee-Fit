@@ -1,10 +1,12 @@
 import React, {useState} from "react";
 import { NavLink } from "react-router-dom";
 import Signup from "./Signup";
+import Login from "./Login";
 
 
-function NavBar({users, user, onLogout, onNewUserSubmit}) {
+function NavBar({onLogin, users, user, onLogout, onNewUserSubmit}) {
     const [userWindow, setUserWindow] = useState(false)
+    const [loginWindow, setLoginWindow] = useState(false)
 
     function closeWindow(){
       setUserWindow(false)
@@ -19,6 +21,19 @@ function NavBar({users, user, onLogout, onNewUserSubmit}) {
       closeWindow()
   }
 
+  function closeLogin(){
+    setLoginWindow(false)
+  }
+
+  function openLogin(){
+    setLoginWindow(true)
+  }
+
+  function handleLoginClose(e){
+    onLogin(e)
+    closeLogin()
+  }
+
     function handleLogout(){
         fetch('/logout', {
             method: 'DELETE',
@@ -31,14 +46,22 @@ function NavBar({users, user, onLogout, onNewUserSubmit}) {
     <div className="auth-buttons">
         {user && user.name ? (
             <div className="welcome-logout">
-            <p>Welcome, {user.name}</p>
+            <p>Welcome, {user.name} </p>
             <button onClick={handleLogout}>Logout</button>
             </div>
         ) : (
             <>
-                <NavLink to="/login">
-                    <button>Login</button>
-                </NavLink>
+            <button className="login-btn" onClick={openLogin}>Login</button>
+                {
+                    loginWindow && (
+                        <div className="window-overlay">
+                            <div className="window-content">
+                                <button className="close-window-btn" onClick={closeLogin}>X</button>
+                                <Login onLogin={handleLoginClose}/>
+                            </div>
+                        </div>
+                    )
+                }
                 <div>
         <div className="button-container">
               <button className="signup-login-btn" onClick={openWindow}>Sign Up!</button>

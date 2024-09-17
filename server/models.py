@@ -8,7 +8,7 @@ from config import db
 workout_exercise = db.Table('workout_exercise',
     db.Column('workout_id', db.Integer, db.ForeignKey('workouts.id'), primary_key=True),
     db.Column('exercise_id', db.Integer, db.ForeignKey('exercises.id'), primary_key=True),
-    db.Column('reps', db.Integer)
+    db.Column('reps', db.Integer, nullable=False) 
 )
 
 

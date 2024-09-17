@@ -37,7 +37,8 @@ function Login({onLogin}){
     }) 
 
     return (
-        <form onSubmit={formik.handleSubmit}>
+        <div className="signup-form-container">
+        <form className="form" onSubmit={formik.handleSubmit}>
             <label>Username: </label>
             <input 
             id="username"
@@ -57,6 +58,7 @@ function Login({onLogin}){
             />
             <button type="submit">Login</button>
         </form>
+        </div>
     )
 }
 

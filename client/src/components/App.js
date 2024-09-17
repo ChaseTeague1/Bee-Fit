@@ -102,7 +102,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <NavBar users={users} user={user} onLogout={handleLogout} onNewUserSubmit={onNewUserSubmit}/>
+      <NavBar users={users} user={user} onLogout={handleLogout} onNewUserSubmit={onNewUserSubmit} onLogin={handleLogin}/>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/workouts">

@@ -9,6 +9,35 @@
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+
+
+
+.login-btn{
+  height: 20px;
+  text-align: center;
+  align-items: center;
+}
+
+.welcome-logout p{
+  margin: 6px;
+  font-size: 12px;
+  font-style: italic;
+  color:#ea9d3e
+}
+
+.welcome-logout button{
+  background-color: #fbbf75;
+  border: none;
+  border-radius: 5px;
+  padding: 4px;
+  margin-bottom: 5px;
+}
+
+.welcome-logout button:hover{
+  background-color: #ea9d3e;
+  cursor: pointer;
+}
+
 .app-container {
   background-color: #312f17;
   height: fit-content;
