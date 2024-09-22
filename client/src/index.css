@@ -10,7 +10,24 @@
 }
 
 
+.e-dlt-btn{
+  text-align: center;
+  width: 100%;
+  border-radius: 20px;
+  height: 30px;
+  background-color: #e5bd3f;
+}
 
+.e-dlt-btn:hover{
+  background-color: #ea9d3e;
+  cursor: pointer;
+}
+
+.e-card-div{
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
 
 .login-btn{
   height: 20px;

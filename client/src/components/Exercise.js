@@ -13,7 +13,7 @@ function Exercise({onDelete, exercise }) {
     }
 
     return (
-        <div>
+        <div className="e-card-div">
         <Link to={`/exercises/${exercise.id}`} className="e-card-link">
             <div className="e-card-container">
                 <div className="e-card">
@@ -23,7 +23,7 @@ function Exercise({onDelete, exercise }) {
             </div>
         </Link>
 
-        <button onClick={openWindow}>Delete</button>
+        <button className="e-dlt-btn" onClick={openWindow}>Delete</button>
         {
             window && (
                 <div className="window-overlay">

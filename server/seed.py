@@ -9,7 +9,7 @@ fake = Faker()
 
 def clear_join_table():
     """Clear data from the join table workout_exercise."""
-    db.session.execute(text('DELETE FROM workout_exercise'))
+    db.session.execute(text('DELETE FROM workout_exercises'))
     db.session.commit()
 
 def seed_users(num_users=10):
@@ -61,7 +61,7 @@ def seed_workouts(num_workouts=20):
             if combination not in added_combinations:
                 added_combinations.add(combination)
                 db.session.execute(
-                    text('INSERT INTO workout_exercise (workout_id, exercise_id, reps) VALUES (:workout_id, :exercise_id, :reps)'),
+                    text('INSERT INTO workout_exercises (workout_id, exercise_id, reps) VALUES (:workout_id, :exercise_id, :reps)'),
                     {'workout_id': workout.id, 'exercise_id': exercise.id, 'reps': fake.random_int(min=5, max=15)}
                 )
     

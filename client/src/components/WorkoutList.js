@@ -39,7 +39,7 @@ function WorkoutList({handleDeleteWorkout, onNewWorkoutSubmit, workouts, exercis
             {
                 workouts.map(workout => (
                     <div>
-                    <WorkoutCard exercises={exercises} onUpdate={onUpdate} user={users} key={workout.id} workout={workout} onDelete={handleDeleteWorkout}/>
+                    <WorkoutCard exercises={exercises} onUpdate={onUpdate} user={users} key={workout.title} workout={workout} onDelete={handleDeleteWorkout}/>
                     </div>
                 ))
             }

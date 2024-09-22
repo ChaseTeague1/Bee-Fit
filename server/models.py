@@ -5,12 +5,23 @@ from config import db
 
 # Models go here!
 
-workout_exercise = db.Table('workout_exercise',
-    db.Column('workout_id', db.Integer, db.ForeignKey('workouts.id'), primary_key=True),
-    db.Column('exercise_id', db.Integer, db.ForeignKey('exercises.id'), primary_key=True),
-    db.Column('reps', db.Integer, nullable=False) 
-)
+#workout_exercise = db.Table('workout_exercise',
+#   db.Column('workout_id', db.Integer, db.ForeignKey('workouts.id'), primary_key=True),
+#   db.Column('exercise_id', db.Integer, db.ForeignKey('exercises.id'), primary_key=True),
+#   db.Column('reps', db.Integer, nullable=False) 
+#)
 
+class Workout_Exercise(db.Model, SerializerMixin):
+    __tablename__= 'workout_exercises'
+
+    id = db.Column(db.Integer, primary_key=True)
+    workout_id = db.Column('workout_id', db.Integer, db.ForeignKey('workouts.id'))
+    exercise_id = db.Column('exercise_id', db.Integer, db.ForeignKey('exercises.id'))
+    reps = db.Column('reps', db.Integer) 
+
+    exercise = db.relationship('Exercise', backref='workout_exercise')
+
+    serialize_rules = ('-workout', '-exercise.workout_exercise')
 
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
@@ -32,8 +43,9 @@ class Workout(db.Model, SerializerMixin):
     description = db.Column(db.String, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    exercises = db.relationship('Exercise', secondary=workout_exercise, backref='workout')
-    exercise_names = association_proxy('exercises', 'name')
+
+    exercises = db.relationship('Workout_Exercise', backref='workout')
+   
 
 
 class Exercise(db.Model, SerializerMixin):

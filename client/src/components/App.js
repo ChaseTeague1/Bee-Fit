@@ -58,10 +58,11 @@ function App() {
       .then(data => setExercises(data));
   }, []);
 
-  function onNewWorkoutSubmit(newWorkout) {
-    setWorkouts([...workouts, newWorkout]);
+  function onNewWorkoutSubmit() {
+    fetch('/workouts')
+      .then(res => res.json())
+      .then(data => setWorkouts(data));
   }
-
   function onNewExerciseSubmit(newExercise) {
     setExercises([...exercises, newExercise]);
   }

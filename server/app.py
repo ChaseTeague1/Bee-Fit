@@ -11,13 +11,30 @@ from sqlalchemy.exc import IntegrityError
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import User, Workout, Exercise, workout_exercise
+from models import User, Workout, Exercise, Workout_Exercise
 
 # Views go here!
 
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
+
+
+class WorkoutExercise(Resource):
+    def post(self):
+        data = request.get_json()
+        new_rep = Workout_Exercise(
+            workout_id = data['workout_id'],
+            exercise_id = data['exercise_id'],
+            reps = data['reps']
+        )
+
+        db.session.add(new_rep)
+        db.session.commit()
+
+        return make_response(new_rep.to_dict(), 201)
+    
+api.add_resource(WorkoutExercise, '/workoutexercise')
 
 # Login Routes
 
@@ -88,8 +105,10 @@ class Workouts(Resource):
             title = data['title'],
             duration = data['duration'],
             description = data['description'],
-            user_id = user_id
+            user_id = user_id,
         )
+
+
         db.session.add(new_workout)
         db.session.commit()
 
@@ -100,6 +119,7 @@ class Workouts(Resource):
                 new_workout.exercises.append(exercise)
         
         db.session.commit()
+
 
         return make_response(new_workout.to_dict(), 201)
 
@@ -196,6 +216,8 @@ class ExerciseById(Resource):
             return make_response(body, 204)
 
 api.add_resource(ExerciseById, '/exercises/<int:id>')
+
+    
 
 
 if __name__ == '__main__':

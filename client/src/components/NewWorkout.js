@@ -18,30 +18,71 @@ function NewWorkout({ onNewWorkoutSubmit, exercises }) {
                 .of(Yup.string().required('Exercise selection is required'))
     })
 
-  const formik = useFormik({
-    initialValues: {
-      title: '',
-      duration: '',
-      description: '',
-      selectedExercises: [], 
-    },
-    validationSchema,
-    onSubmit: (values, { setSubmitting, resetForm }) => {
-      fetch('/workouts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    const formik = useFormik({
+        initialValues: {
+          title: '',
+          duration: '',
+          description: '',
+          selectedExercises: [],  // IDs of exercises selected by the user
+          reps: '',  // Reps for each exercise (assuming a single reps value for now)
         },
-        body: JSON.stringify(values),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          onNewWorkoutSubmit(data);
-          resetForm();
-        })
-        .finally(() => setSubmitting(false));
-    },
-  });
+        validationSchema,
+        onSubmit: (values, { setSubmitting, resetForm }) => {
+          // First, post the workout data
+          fetch('/workouts', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              title: values.title,
+              duration: values.duration,
+              description: values.description,
+            }),
+          })
+          .then((res) => {
+            if (!res.ok) {
+              throw new Error('Failed to create workout');
+            }
+            return res.json();
+          })
+          .then((workoutData) => {
+            const { id: workout_id } = workoutData;
+      
+            const exercisePromises = values.selectedExercises.map((exercise_id) => {
+              return fetch('/workoutexercise', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  workout_id, 
+                  exercise_id,
+                  reps: values.reps, 
+                }),
+              })
+              .then((res) => {
+                if (!res.ok) {
+                  throw new Error('Failed to create workout-exercise relationship');
+                }
+                return res.json();
+              });
+            });
+      
+            return Promise.all(exercisePromises);
+          })
+          .then((repData) => {
+            console.log('Workout-exercise data:', repData);
+            resetForm(); 
+            onNewWorkoutSubmit();
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          })
+          .finally(() => setSubmitting(false));
+        },
+      });
+      
 
   
   const handleCheckboxChange = (event) => {
@@ -109,6 +150,15 @@ function NewWorkout({ onNewWorkoutSubmit, exercises }) {
             </label>
         ))}
     </div>
+
+    <label>Reps: </label>
+    <input 
+    type="text"
+    id="reps"
+    name="reps"
+    onChange={formik.handleChange}
+    value={formik.values.reps}
+    />
       <button type="submit">Submit</button>
     </form>
   );
