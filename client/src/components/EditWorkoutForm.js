@@ -11,6 +11,7 @@ function EditWorkoutForm({ workout, onUpdate, onCancel, onClose, exercises }) {
             description: workout.description,
             duration: workout.duration,
             selectedExercises: workout.exercises.map(ex => ex.id.toString()),
+            reps: workout.reps,
         },
         onSubmit: async (values) => {
             try {
@@ -94,6 +95,13 @@ function EditWorkoutForm({ workout, onUpdate, onCancel, onClose, exercises }) {
                     </label>
                 ))}
             </div>
+            <input 
+            type='number'
+            name='reps'
+            onChange={formik.handleChange}
+            value={formik.values.reps}
+            placeholder='Reps...'
+            />
             <button type="button" onClick={onCancel}>Cancel</button>
             <button type="submit">Save</button>
         </form>

@@ -147,19 +147,33 @@ class WorkoutById(Resource):
         workout = Workout.query.filter(Workout.id == id).first()
         data = request.get_json()
 
+    # Update the workout attributes
         for attr in data:
             if attr != 'selectedExercises':  
                 setattr(workout, attr, data[attr])
-    
-        if 'selectedExercises' in data:
-            exercise_ids = data['selectedExercises'] 
-            exercises = Exercise.query.filter(Exercise.id.in_(exercise_ids)).all()
-            workout.exercises = exercises
 
-        db.session.add(workout)
+    # Handle the selectedExercises and their reps
+        if 'selectedExercises' in data:
+            exercise_ids = data['selectedExercises']
+            workout.exercises = []  # Clear current associations
+
+        # Loop through each exercise and add the new associations
+            for exercise_id in exercise_ids:
+                exercise = db.session.get(Exercise, exercise_id)
+                if exercise:
+                # Create a new Workout_Exercise entry with the current reps
+                    new_rep = Workout_Exercise(
+                        workout_id=workout.id,
+                        exercise_id=exercise_id,
+                        reps=data.get('reps')  # Get the single reps value from the request
+                    )
+                    workout.exercises.append(new_rep)
+
         db.session.commit()
 
         return make_response(workout.to_dict(), 200)
+
+
 
 api.add_resource(WorkoutById, '/workouts/<int:id>')
 

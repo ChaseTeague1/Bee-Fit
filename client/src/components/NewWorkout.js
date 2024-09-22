@@ -23,12 +23,11 @@ function NewWorkout({ onNewWorkoutSubmit, exercises }) {
           title: '',
           duration: '',
           description: '',
-          selectedExercises: [],  // IDs of exercises selected by the user
-          reps: '',  // Reps for each exercise (assuming a single reps value for now)
+          selectedExercises: [], 
+          reps: '',
         },
         validationSchema,
         onSubmit: (values, { setSubmitting, resetForm }) => {
-          // First, post the workout data
           fetch('/workouts', {
             method: 'POST',
             headers: {
