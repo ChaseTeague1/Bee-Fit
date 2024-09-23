@@ -48,12 +48,10 @@ def seed_workouts(num_workouts=20):
             user_id=fake.random_element(elements=[user.id for user in users])
         )
         db.session.add(workout)
-        db.session.flush()  # Ensure workout.id is available
+        db.session.flush() 
 
-        # Track added exercise combinations to avoid duplicates
         added_combinations = set()
 
-        # Add some exercises to the workout
         for _ in range(fake.random_int(min=1, max=5)):
             exercise = fake.random_element(elements=exercises)
             combination = (workout.id, exercise.id)
